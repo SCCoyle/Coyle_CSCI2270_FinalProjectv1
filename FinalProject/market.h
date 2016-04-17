@@ -18,17 +18,19 @@ struct product{
 	int quantity;
 	int totalSold;
 	double price;
+	double cost;
 	std::vector<int> soldChain;
 	product *left = NULL;
 	product *right = NULL;
 	
 	product(){};
 
-    product(std::string in_name, int in_quantity, double in_price)
+    product(std::string in_name, int in_quantity, double in_price, double in_cost)
     {
         name = in_name;
         quantity = in_quantity;
         price = in_price;
+		cost = in_cost;
     }
 };
 
@@ -41,17 +43,17 @@ class market
 		market();
 		~market();
 		void addSettings(double decay, bool recency, bool max, double maxP);
-		void addProducts(std::string name, int quantity, double price);
+		void addProducts(std::string name, int quantity, double price, double cost);
 		void buyProduct(std::string name);
-		void listProducts();
+		void printProducts();
 		
 	protected:
 	private:
 		settings settingsStorage;
-		product *root;
+		product *root = NULL;
 		product* findProduct(std::string name);
 		void addSale(product *productAdd);
-		void listProducts(product *root);
+		void printProducts(product *root);
 		int checkNumber(std::string number);
 		void setInitalTime();
 
