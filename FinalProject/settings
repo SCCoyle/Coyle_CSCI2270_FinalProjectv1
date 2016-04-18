@@ -1,6 +1,6 @@
 Settings:
-Decay rate (a^-t): e
-Recency detection: 0
-Max price: 0
-Max price multiplier: 10
+Decay rate (a^-t):-2.7
+Recency detection:0
+Max price:0
+Max price multiplier:10
 

@@ -40,10 +40,39 @@ void newSettings(market coinMarket)
 		cout << "settings opening unsuccessful" << endl;
 	}
 	//parsing the file 
+	
+	//initalizing the variables
 	double decay;
+	string decayS;
 	bool recency;
+	string recencyS;
 	bool max;
+	string maxS;
 	double maxP;
+	string maxPS;
+	
+	//storing the settigns in the string versions of the settings
+	getline(settingsFile,decayS);
+	getline(settingsFile,decayS,':');
+	getline(settingsFile,decayS);
+	getline(settingsFile,recencyS,':');
+	getline(settingsFile,recencyS);
+	getline(settingsFile,maxS,':');
+	getline(settingsFile,maxS);
+	getline(settingsFile,maxPS,':');
+	getline(settingsFile,maxPS);
+	
+	//Converting all of the strings to the appropriate type
+	stringstream decayConvert(decayS);
+	decayConvert >> decay;
+	stringstream recencyConvert(recencyS);
+	recencyConvert >> recency;
+	stringstream maxConvert(maxS);
+	maxConvert >> max;
+	stringstream maxPConvert(maxPS);
+	maxPConvert >> maxP;
+	
+	//Setting the settings values
 	coinMarket.addSettings(decay,recency,max,maxP);
 	cout << "b" << endl;
 	
@@ -112,7 +141,7 @@ int main(int argc, char **argv)
 		{
 			case 1:
 			{
-				cout << "1. Print vertices" << endl;
+				cout << "1. Print Inventory" << endl;
 				coinMarket.printProducts();
 				break;
 			}

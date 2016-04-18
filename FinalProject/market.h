@@ -46,6 +46,7 @@ class market
 		void addProducts(std::string name, int quantity, double price, double cost);
 		void buyProduct(std::string name);
 		void printProducts();
+		void totalProfit();
 		
 	protected:
 	private:
@@ -56,6 +57,7 @@ class market
 		void printProducts(product *root);
 		int checkNumber(std::string number);
 		void setInitalTime();
+		void totalProfit(product *root);
 
 };
 
