@@ -8,7 +8,7 @@ struct settings{
 	bool recencyDetection;
 	bool maxPrice;
 	double maxPriceMultiplier;
-	double startTime;
+	time_t startTime;
 	
 };
 
@@ -45,19 +45,22 @@ class market
 		void addSettings(double decay, bool recency, bool max, double maxP);
 		void addProducts(std::string name, int quantity, double price, double cost);
 		void buyProduct(std::string name);
-		void printProducts();
+		void printProductsSafe();
 		void totalProfit();
+		void timeStats();
+
 		
 	protected:
 	private:
 		settings settingsStorage;
 		product *root = NULL;
+		product *head = NULL;
+		void printProducts(product * node);
 		product* findProduct(std::string name);
-		void addSale(product *productAdd);
-		void printProducts(product *root);
 		int checkNumber(std::string number);
 		void setInitalTime();
-		void totalProfit(product *root);
+		void totalProfit(product * root);
+		time_t lastTimeCheck;
 
 };
 

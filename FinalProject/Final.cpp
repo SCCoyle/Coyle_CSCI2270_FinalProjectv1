@@ -27,7 +27,7 @@ int menu()
 	return choice;
 }
 
-void newSettings(market coinMarket)
+void newSettings(market * coinMarket)
 {
 	//opening the settings file
 	string settings = "settings.txt";
@@ -73,12 +73,12 @@ void newSettings(market coinMarket)
 	maxPConvert >> maxP;
 	
 	//Setting the settings values
-	coinMarket.addSettings(decay,recency,max,maxP);
-	cout << "b" << endl;
+	coinMarket->addSettings(decay,recency,max,maxP);
+//	cout << "b" << endl;
 	
 }
 
-void newProducts(market coinMarket)
+void newProducts(market * coinMarket)
 {
 	//opening the products file
 	string products = "Products.txt";
@@ -122,7 +122,7 @@ void newProducts(market coinMarket)
 		//giving it to the addProduct method
 		if(name != "")
 		{
-			coinMarket.addProducts(name,quantity,price,cost);
+			coinMarket->addProducts(name,quantity,price,cost);
 		}
 	}
 }
@@ -130,7 +130,7 @@ void newProducts(market coinMarket)
 
 int main(int argc, char **argv)
 {
-	market coinMarket;
+	market *coinMarket = new market();
 	newSettings(coinMarket);
 	newProducts(coinMarket);
 	bool interfaceKill = 0;
@@ -142,12 +142,13 @@ int main(int argc, char **argv)
 			case 1:
 			{
 				cout << "1. Print Inventory" << endl;
-				coinMarket.printProducts();
+				coinMarket->printProductsSafe();
 				break;
 			}
 			case 2:
 			{
-				cout << "2. Find districts" << endl;
+				cout << "2. Time Stats" << endl;
+				coinMarket->timeStats();
 				break;
 			}
 			case 3:
