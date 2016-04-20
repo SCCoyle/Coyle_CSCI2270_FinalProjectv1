@@ -145,7 +145,7 @@ void market::buyProduct(std::string name)
 	product *temp = findProduct(name);
 	if(temp != NULL)
 	{
-		std::cout << temp->name << std::endl;
+		purchase
 	}
 	else
 	{
@@ -214,7 +214,7 @@ product * market::findProduct(std::string name)
 	}
 	if(found == 2)
 	{
-		temp == NULL;
+		temp = NULL;
 	}
 	return temp;
 }
@@ -222,5 +222,16 @@ product * market::findProduct(std::string name)
 void market::timeStats()
 {
 	std::cout << "Current time: " << time(&settingsStorage.startTime) <<std::endl;  
-	std::cout << "Last time check was  " << time(&settingsStorage.startTime) - lastTimeCheck << " seconds ago" <<std::endl;  
+	std::cout << "Last time check was  " << time(&settingsStorage.startTime) - lastTimeCheck << " seconds ago" <<std::endl;
+	lastTimeCheck = time(&settingsStorage.startTime);
+}
+
+void market::addNewUser(std::string name, std::string password, double wallet)
+{
+	userInfo newUser = new *userInfo(name,password,wallet);
+	if(!currentUser)
+	{
+		currentUser = newUser;
+	}
+	users.push_back(newUser);
 }

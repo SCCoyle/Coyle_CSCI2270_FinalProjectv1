@@ -34,6 +34,46 @@ struct product{
     }
 };
 
+struct personalPurchase;
+
+struct userInfo{
+	std::string name;
+	std::string password;
+	double wallet;
+	std::vector<personalPurchase> *purchases;
+	
+	userInfo(std::string in_name, std::string in_password, double in_wallet)
+	{
+		name = in_name;
+		password = in_password;
+		wallet = in_wallet;
+	}
+	
+};
+
+struct purchase{
+	time_t time;
+	userInfo *buyer;
+	product *item;
+	
+	purchase(time_t in_time, userInfo *in_buyer, product *in_item)
+	{
+		time = in_time;
+		buyer = in_buyer;
+		item = in_item;
+	}
+};
+
+struct personalPurchase{
+	purchase *purchaseEvent;
+};
+
+struct purchaseBlockChain{
+	purchase *purchaseEvent;
+};
+
+
+
 
 
 
@@ -44,6 +84,7 @@ class market
 		~market();
 		void addSettings(double decay, bool recency, bool max, double maxP);
 		void addProducts(std::string name, int quantity, double price, double cost);
+		void addNewUser(std::string name, std::string password, double wallet);
 		void buyProduct(std::string name);
 		void printProductsSafe();
 		void totalProfit();
@@ -54,13 +95,15 @@ class market
 	private:
 		settings settingsStorage;
 		product *root = NULL;
-		product *head = NULL;
+		std::vector<purchaseBlockChain> blockChain;
+		std::vector<userInfo> *users;
 		void printProducts(product * node);
 		product* findProduct(std::string name);
 		int checkNumber(std::string number);
 		void setInitalTime();
 		void totalProfit(product * root);
 		time_t lastTimeCheck;
+		userInfo *currentUser = NULL;
 
 };
 

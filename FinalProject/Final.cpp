@@ -12,9 +12,9 @@ int menu()
 {
 	//visual menu
 	cout << "======Main Menu======" << endl;
-	cout << "1. Print vertices" << endl;
-	cout << "2. Find districts" << endl;
-	cout << "3. Find shortest path" << endl;
+	cout << "1. Print Inventory" << endl;
+	cout << "2. Time Statistics" << endl;
+	cout << "3. Buy a Product" << endl;
 	cout << "4. Quit" << endl; 
 	
 	//converting the users choice
@@ -127,12 +127,26 @@ void newProducts(market * coinMarket)
 	}
 }
 
-
+void newUser(market *coinMarket)
+{
+	cout << "What is your name?" << endl;
+	string userName;
+	getline(cin,userName);	cout << "Enter a password" << endl;
+	string password;
+	getline(cin,password);	cout << "How much is in your wallet? " << endl;
+	double wallet;
+	string walletS;
+	getline(cin,walletS);
+	stringstream walletConvert(walletS);
+	walletConvert >> wallet;
+	coinMarket->addNewUser(userName,password, wallet);
+}
 int main(int argc, char **argv)
 {
 	market *coinMarket = new market();
 	newSettings(coinMarket);
 	newProducts(coinMarket);
+	newUser(coinMarket);
 	bool interfaceKill = 0;
 	while(!interfaceKill)
 	{
@@ -153,7 +167,10 @@ int main(int argc, char **argv)
 			}
 			case 3:
 			{
-				cout << "3. Find shortest path" << endl;
+				cout << "Enter a Coin:" << endl;
+				string coinName;
+				getline(cin,coinName);
+				coinMarket->buyProduct(coinName);
 				break;
 			}
 			case 4:
