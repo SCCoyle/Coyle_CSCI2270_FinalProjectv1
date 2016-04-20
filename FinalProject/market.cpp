@@ -145,7 +145,12 @@ void market::buyProduct(std::string name)
 	product *temp = findProduct(name);
 	if(temp != NULL)
 	{
-		purchase
+		purchase *newPurchase = new purchase(time(&settingsStorage.startTime),currentUser,temp,temp->cost);
+		temp->cost = temp->cost*(1.01);
+		purchaseBlockChain *newBlock = new purchaseBlockChain(newPurchase);
+		personalPurchase *newPersonalPurchase = new personalPurchase(newPurchase);
+		currentUser->purchases->push_back(newPersonalPurchase);
+		blockChain.push_back(newBlock);
 	}
 	else
 	{
@@ -228,10 +233,12 @@ void market::timeStats()
 
 void market::addNewUser(std::string name, std::string password, double wallet)
 {
-	userInfo newUser = new *userInfo(name,password,wallet);
+	userInfo *newUser = new userInfo(name,password,wallet);
 	if(!currentUser)
 	{
 		currentUser = newUser;
 	}
+	std::cout << "test0" << std::endl;
 	users.push_back(newUser);
+	std::cout << "User Added" << std::endl;
 }

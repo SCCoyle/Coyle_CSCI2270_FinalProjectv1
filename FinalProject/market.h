@@ -40,7 +40,7 @@ struct userInfo{
 	std::string name;
 	std::string password;
 	double wallet;
-	std::vector<personalPurchase> *purchases;
+	std::vector<personalPurchase*> *purchases;
 	
 	userInfo(std::string in_name, std::string in_password, double in_wallet)
 	{
@@ -55,21 +55,33 @@ struct purchase{
 	time_t time;
 	userInfo *buyer;
 	product *item;
+	double cost;
 	
-	purchase(time_t in_time, userInfo *in_buyer, product *in_item)
+	purchase(time_t in_time, userInfo *in_buyer, product *in_item,double in_cost)
 	{
 		time = in_time;
 		buyer = in_buyer;
 		item = in_item;
+		cost = in_cost;
 	}
 };
 
 struct personalPurchase{
 	purchase *purchaseEvent;
+	
+	personalPurchase(purchase *in_purchase)
+	{
+		purchaseEvent = in_purchase;
+	}
 };
 
 struct purchaseBlockChain{
 	purchase *purchaseEvent;
+	
+	purchaseBlockChain(purchase *in_purchase)
+	{
+		purchaseEvent = in_purchase;
+	}
 };
 
 
@@ -95,8 +107,8 @@ class market
 	private:
 		settings settingsStorage;
 		product *root = NULL;
-		std::vector<purchaseBlockChain> blockChain;
-		std::vector<userInfo> *users;
+		std::vector<purchaseBlockChain*> blockChain;
+		std::vector<userInfo*> users;
 		void printProducts(product * node);
 		product* findProduct(std::string name);
 		int checkNumber(std::string number);
