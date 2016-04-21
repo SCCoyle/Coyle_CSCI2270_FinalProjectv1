@@ -1,5 +1,6 @@
 Settings:
 Decay rate (a^-t):.01
+Exponential decay base:2.71
 Recency detection:0
 Max price:0
 Max price multiplier:10
