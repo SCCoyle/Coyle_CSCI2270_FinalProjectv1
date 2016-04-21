@@ -1,5 +1,5 @@
 Settings:
-Decay rate (a^-t):2.7
+Decay rate (a^-t):.01
 Recency detection:0
 Max price:0
 Max price multiplier:10
