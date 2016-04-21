@@ -54,7 +54,7 @@ int market::checkNumber(std::string number)
 void market::addProducts(std::string name,int quantity, double price, double cost)
 {
 //	std::cout << name << " " << quantity << " " << price << " " << cost << std::endl;
-	product *newProduct = new product(name,quantity,price,cost);
+	product *newProduct = new product(name,quantity,price,cost,time(&(settingsStorage.startTime)));
 	product *temp = root;
 	if(root == NULL)
 	{
@@ -128,15 +128,17 @@ void market::addProducts(std::string name,int quantity, double price, double cos
 */
 }
 
-void market::addSettings(double decay, bool recency, bool max, double maxP)
+void market::addSettings(double decay, double decayBase, bool recency, bool max, double maxP,double postMultiplier)
 {
-	settingsStorage.decayRate = decay;
+	settingsStorage.decayRate = -1 * decay;
+	settingsStorage.decayRateBase = decayBase;
 	settingsStorage.recencyDetection = recency;
 	settingsStorage.maxPrice = max;
 	settingsStorage.maxPriceMultiplier = maxP;
 	time_t startTime;
 	settingsStorage.startTime = time(&startTime);
 	lastTimeCheck = startTime;
+	settingsStorage.postBuyMultiplier = postMultiplier;
 //	std::cout << "Start time: " << startTime << std::endl;
 }
 
@@ -145,12 +147,35 @@ void market::buyProduct(std::string name)
 	product *temp = findProduct(name);
 	if(temp != NULL)
 	{
-		purchase *newPurchase = new purchase(time(&settingsStorage.startTime),currentUser,temp,temp->cost);
-		temp->cost = temp->cost*(1.01);
-		purchaseBlockChain *newBlock = new purchaseBlockChain(newPurchase);
-		personalPurchase *newPersonalPurchase = new personalPurchase(newPurchase);
-		currentUser->purchases->push_back(newPersonalPurchase);
-		blockChain.push_back(newBlock);
+		if(temp->quantity != 0)
+		{
+			(temp->quantity)--;
+			if(currentUser->wallet > temp->price)
+			{
+				currentUser->wallet = currentUser->wallet - temp->price;
+				std::cout << "You have " << currentUser->wallet << " dollars left in your wallet." << std::endl;
+				if(temp->base < temp->price * (pow(settingsStorage.decayRateBase,settingsStorage.decayRate * (time(&settingsStorage.startTime) - temp->lastSold))))
+				{
+					temp->price = temp->price * (pow(settingsStorage.decayRateBase,settingsStorage.decayRate * (time(&settingsStorage.startTime) - temp->lastSold)));
+				}
+				temp->lastSold = time(&settingsStorage.startTime);
+				purchase *newPurchase = new purchase(time(&settingsStorage.startTime),currentUser,temp,temp->cost);
+				temp->price = temp->price*(settingsStorage.postBuyMultiplier);
+				std::cout << "The new price is: " << temp->price << std::endl;
+				purchaseBlockChain *newBlock = new purchaseBlockChain(newPurchase);
+				personalPurchase *newPersonalPurchase = new personalPurchase(newPurchase);
+				currentUser->purchases.push_back(newPersonalPurchase);
+				blockChain.push_back(newBlock);
+			}
+			else
+			{
+				std::cout << "There is not enough money in your wallet" << std::endl;
+			}
+		}
+		else
+		{
+			std::cout << "There are no " << name << "s left in stock" << std::endl;
+		}
 	}
 	else
 	{
@@ -167,7 +192,14 @@ void market::printProducts(product *node)
 		printProducts(temp->left);
 	}
 	if(temp->name != "")
-		std::cout << "Name: "<< node->name  << std::endl << "Price: "<< node->price << std::endl; 
+	{
+		if(temp->base < temp->price * (pow(settingsStorage.decayRateBase,settingsStorage.decayRate * (time(&settingsStorage.startTime) - temp->lastSold))))
+		{
+			temp->price = temp->price * (pow(settingsStorage.decayRateBase,settingsStorage.decayRate * (time(&settingsStorage.startTime) - temp->lastSold)));
+		}
+		temp->lastSold = time(&settingsStorage.startTime);
+		std::cout << "Name: "<< temp->name  << std::endl << "Price: "<< temp->price << std::endl; 
+	}
 	if(temp->right != NULL)
 	{
 		printProducts(temp->right);

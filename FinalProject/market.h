@@ -5,6 +5,8 @@
 
 struct settings{
 	double decayRate;
+	double decayRateBase;
+	double postBuyMultiplier;
 	bool recencyDetection;
 	bool maxPrice;
 	double maxPriceMultiplier;
@@ -18,19 +20,23 @@ struct product{
 	int quantity;
 	int totalSold;
 	double price;
+	double base;
 	double cost;
+	time_t lastSold;
 	std::vector<int> soldChain;
 	product *left = NULL;
 	product *right = NULL;
 	
 	product(){};
 
-    product(std::string in_name, int in_quantity, double in_price, double in_cost)
+    product(std::string in_name, int in_quantity, double in_price, double in_cost, time_t start_time)
     {
         name = in_name;
         quantity = in_quantity;
         price = in_price;
+		base = in_price;
 		cost = in_cost;
+		lastSold = start_time;
     }
 };
 
@@ -40,7 +46,7 @@ struct userInfo{
 	std::string name;
 	std::string password;
 	double wallet;
-	std::vector<personalPurchase*> *purchases;
+	std::vector<personalPurchase*> purchases;
 	
 	userInfo(std::string in_name, std::string in_password, double in_wallet)
 	{
@@ -94,7 +100,7 @@ class market
 	public:
 		market();
 		~market();
-		void addSettings(double decay, bool recency, bool max, double maxP);
+		void addSettings(double decay,double decayBase, bool recency, bool max, double maxP, double postMultiplier);
 		void addProducts(std::string name, int quantity, double price, double cost);
 		void addNewUser(std::string name, std::string password, double wallet);
 		void buyProduct(std::string name);

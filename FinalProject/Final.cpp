@@ -15,7 +15,8 @@ int menu()
 	cout << "1. Print Inventory" << endl;
 	cout << "2. Time Statistics" << endl;
 	cout << "3. Buy a Product" << endl;
-	cout << "4. Quit" << endl; 
+	cout << "4. Net profit"	<< endl;
+	cout << "5. Quit" << endl; 
 	
 	//converting the users choice
 	int choice;
@@ -43,37 +44,49 @@ void newSettings(market * coinMarket)
 	
 	//initalizing the variables
 	double decay;
-	string decayS;
+	string decayS;	
+	double decayBase;
+	string decayBaseS;
 	bool recency;
 	string recencyS;
 	bool max;
 	string maxS;
 	double maxP;
 	string maxPS;
+	double postMultiplier;
+	string postMultiplierS;
 	
 	//storing the settigns in the string versions of the settings
 	getline(settingsFile,decayS);
 	getline(settingsFile,decayS,':');
 	getline(settingsFile,decayS);
+	getline(settingsFile,decayBaseS,':');
+	getline(settingsFile,decayBaseS);
 	getline(settingsFile,recencyS,':');
 	getline(settingsFile,recencyS);
 	getline(settingsFile,maxS,':');
 	getline(settingsFile,maxS);
 	getline(settingsFile,maxPS,':');
 	getline(settingsFile,maxPS);
+	getline(settingsFile,postMultiplierS,':');
+	getline(settingsFile,postMultiplierS);
 	
 	//Converting all of the strings to the appropriate type
 	stringstream decayConvert(decayS);
 	decayConvert >> decay;
+	stringstream decayBaseConvert(decayBaseS);
+	decayBaseConvert >> decayBase;
 	stringstream recencyConvert(recencyS);
 	recencyConvert >> recency;
 	stringstream maxConvert(maxS);
 	maxConvert >> max;
 	stringstream maxPConvert(maxPS);
 	maxPConvert >> maxP;
+	stringstream postMultiplierConvert(postMultiplierS);
+	postMultiplierConvert >> postMultiplier;
 	
 	//Setting the settings values
-	coinMarket->addSettings(decay,recency,max,maxP);
+	coinMarket->addSettings(decay,decayBase,recency,max,maxP,postMultiplier);
 //	cout << "b" << endl;
 	
 }
@@ -131,8 +144,8 @@ void newUser(market *coinMarket)
 {
 	cout << "What is your name?" << endl;
 	string userName;
-	getline(cin,userName);	cout << "Enter a password" << endl;
-	string password;
+	//getline(cin,userName);	cout << "Enter a password" << endl;
+	string password = "password";
 	getline(cin,password);	cout << "How much is in your wallet? " << endl;
 	double wallet;
 	string walletS;
@@ -155,13 +168,11 @@ int main(int argc, char **argv)
 		{
 			case 1:
 			{
-				cout << "1. Print Inventory" << endl;
 				coinMarket->printProductsSafe();
 				break;
 			}
 			case 2:
 			{
-				cout << "2. Time Stats" << endl;
 				coinMarket->timeStats();
 				break;
 			}
@@ -175,7 +186,12 @@ int main(int argc, char **argv)
 			}
 			case 4:
 			{
-				cout << "4. Quit" << endl;
+				interfaceKill = 1;
+				break;
+			}
+			case 5:
+			{
+				interfaceKill = 1;
 				break;
 			}
 		}
