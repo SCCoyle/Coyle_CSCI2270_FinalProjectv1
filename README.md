@@ -18,12 +18,11 @@
   + Known to run on Linux (Fedora 23) but should not have trouble on other operating systems
 
 #Group Members
-  +Samuel Coyle
+  + Samuel Coyle
 
 #Contributors
   + Dante Pasionek
 
 #Open issues/bugs
-List any known b
-ugs i
+  + There are ~~no known~~ bugs
   
