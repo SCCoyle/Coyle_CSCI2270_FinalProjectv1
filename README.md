@@ -24,6 +24,10 @@
 #Contributors
   + Dante Pasionek
 
-#Open issues/bugs
+#Open issues/bugs/todo
   + There are ~~no known~~ bugs
+  + Implement multiple users (framework is there)
+  + Print out all of a users purchases
+  + Print out all past purchases and the information about them
+  + Make a better demand function
   
