@@ -6,6 +6,7 @@
    + The prices have and exponential decay based on the last time something was purchased
    + Showing the total amout made since the start of the market  
    + Implements a tree for storage
+   + Uses two external files (settings.txt and Products.txt) toquickly change settings and add products
 
 #How to Run
  + This project is run the same way as any other project  
