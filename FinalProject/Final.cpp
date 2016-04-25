@@ -16,7 +16,8 @@ int menu()
 	cout << "2. Time Statistics" << endl;
 	cout << "3. Buy a Product" << endl;
 	cout << "4. Net profit"	<< endl;
-	cout << "5. Quit" << endl; 
+	cout << "5. Add Money to Wallet"	<< endl;
+	cout << "6. Quit" << endl; 
 	
 	//converting the users choice
 	int choice;
@@ -186,10 +187,15 @@ int main(int argc, char **argv)
 			}
 			case 4:
 			{
-				interfaceKill = 1;
+				coinMarket->totalProfit();
 				break;
 			}
 			case 5:
+			{
+				coinMarket->addMoney();
+				break;
+			}
+			case 6:
 			{
 				interfaceKill = 1;
 				break;

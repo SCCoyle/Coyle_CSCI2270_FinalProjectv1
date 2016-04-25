@@ -22,6 +22,7 @@ struct product{
 	double price;
 	double base;
 	double cost;
+	double profit;
 	time_t lastSold;
 	std::vector<int> soldChain;
 	product *left = NULL;
@@ -37,6 +38,7 @@ struct product{
 		base = in_price;
 		cost = in_cost;
 		lastSold = start_time;
+		profit = 0;
     }
 };
 
@@ -107,6 +109,7 @@ class market
 		void printProductsSafe();
 		void totalProfit();
 		void timeStats();
+		void addMoney();
 
 		
 	protected:
@@ -122,6 +125,7 @@ class market
 		void totalProfit(product * root);
 		time_t lastTimeCheck;
 		userInfo *currentUser = NULL;
-
+		void totalProfit(std::vector<purchaseBlockChain*> blockChain);
+		void printProfit(product * node);
 };
 

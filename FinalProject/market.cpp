@@ -153,13 +153,14 @@ void market::buyProduct(std::string name)
 			if(currentUser->wallet > temp->price)
 			{
 				currentUser->wallet = currentUser->wallet - temp->price;
+				double salePrice = temp->price;
 				std::cout << "You have " << currentUser->wallet << " dollars left in your wallet." << std::endl;
 				if(temp->base < temp->price * (pow(settingsStorage.decayRateBase,settingsStorage.decayRate * (time(&settingsStorage.startTime) - temp->lastSold))))
 				{
 					temp->price = temp->price * (pow(settingsStorage.decayRateBase,settingsStorage.decayRate * (time(&settingsStorage.startTime) - temp->lastSold)));
 				}
 				temp->lastSold = time(&settingsStorage.startTime);
-				purchase *newPurchase = new purchase(time(&settingsStorage.startTime),currentUser,temp,temp->cost);
+				purchase *newPurchase = new purchase(time(&settingsStorage.startTime),currentUser,temp,salePrice);
 				temp->price = temp->price*(settingsStorage.postBuyMultiplier);
 				std::cout << "The new price is: " << temp->price << std::endl;
 				purchaseBlockChain *newBlock = new purchaseBlockChain(newPurchase);
@@ -270,7 +271,57 @@ void market::addNewUser(std::string name, std::string password, double wallet)
 	{
 		currentUser = newUser;
 	}
-	std::cout << "test0" << std::endl;
+//	std::cout << "test0" << std::endl;
 	users.push_back(newUser);
 	std::cout << "User Added" << std::endl;
+}
+
+void market::printProfit(product * node)
+{
+	product *temp = node;
+//	std::cout << root->right << std::endl;
+	if(temp->left != NULL)
+	{
+		printProfit(temp->left);
+	}
+	if(temp->name != "")
+	{
+		if(temp->base < temp->price * (pow(settingsStorage.decayRateBase,settingsStorage.decayRate * (time(&settingsStorage.startTime) - temp->lastSold))))
+		{
+			temp->price = temp->price * (pow(settingsStorage.decayRateBase,settingsStorage.decayRate * (time(&settingsStorage.startTime) - temp->lastSold)));
+		}
+		temp->lastSold = time(&settingsStorage.startTime);
+		std::cout << "Name: "<< temp->name  << std::endl << "Profit: "<< temp->profit << std::endl; 
+	}
+	if(temp->right != NULL)
+	{
+		printProfit(temp->right);
+	}
+}
+void market::totalProfit()
+{
+	totalProfit(blockChain);
+}
+void market::totalProfit(std::vector<purchaseBlockChain*> blockChain)
+{	
+	int blockChainSize = blockChain.size();
+	for(int blockChainIndex = 0; blockChainIndex < blockChainSize; blockChainIndex++)
+	{
+		product *currentProduct = blockChain[blockChainIndex]->purchaseEvent->item;
+		double salePrice = blockChain[blockChainIndex]->purchaseEvent->cost;
+//		std::cout << currentProduct->cost << " " << salePrice << std::endl;
+		currentProduct->profit = salePrice - currentProduct->cost;
+	}
+	printProfit(root);
+}
+
+void market::addMoney()
+{
+	std::cout << "How much would you like to add " << currentUser->name << "?" << std::endl;
+	double money;
+	std::string moneyS;
+	getline(std::cin,moneyS);
+	std::stringstream convertMoney(moneyS);
+	convertMoney >> money;
+	currentUser->wallet = currentUser->wallet + money;
 }
