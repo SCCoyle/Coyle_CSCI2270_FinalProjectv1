@@ -1,0 +1,6 @@
+Products:(name,quantity price grossCost)
+Silver Dollar,1 25.25 20
+Kugerand,100 500 450
+Wheat Penny,56 .05 1
+1944 Quarter,5678 1 .25
+Bicentennial Quarter,67 2 .4 
